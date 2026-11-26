@@ -6,6 +6,7 @@
 <meta property="og:title" content="La Maison Violette">
 <meta property="og:description" content="Luxury marketing and brand consultancy by Violetta Tavadova, across the GCC and Europe.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://vtav-bit.github.io/lamaison-violette/">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>La Maison Violette</title>
 <meta name="description" content="La Maison Violette by Violetta Tavadova: luxury marketing and brand consultancy for hotels, maisons and cultural houses across the GCC and Europe.">
@@ -921,7 +922,8 @@ footer .caps{color:var(--mute-d)}
           </div>
           <div class="field"><label for="f-house">maison or project</label><input id="f-house"></div>
           <div class="field"><label for="f-vision">your vision</label><textarea id="f-vision" rows="3"></textarea></div>
-          <div class="send"><small>preview · letters are not sent yet</small><button class="seal" type="submit">seal</button></div>
+          <input type="checkbox" name="botcheck" id="f-bot" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
+          <div class="send"><small>sealed &amp; delivered by hand</small><button class="seal" type="submit">seal</button></div>
         </form>
         <div class="envpos" aria-hidden="true"><div class="envbody">
           <img class="einside" src="inside.webp" alt="">
@@ -934,7 +936,7 @@ footer .caps{color:var(--mute-d)}
         <div class="thanks" id="thanks" role="status" aria-live="polite">
           <b>Sealed.</b>
           <p>Thank you. La Maison Violette will be in touch with you soon.</p>
-          <small>preview · letters are not delivered yet</small>
+          <small id="sendState">your letter is on its way</small>
           <button class="btn" type="button" id="again">write another letter</button>
         </div>
       </div>
@@ -1038,6 +1040,14 @@ copyBtn.addEventListener('click',()=>{ const t=document.getElementById('mail').t
 const letter=document.getElementById('letter'), stack=letter.parentElement;
 const STEPS=['s1','s2','s3','s4','s5','s6'];
 letter.addEventListener('submit',e=>{ e.preventDefault(); if(stack.classList.contains('s1')) return;
+  const v=id=>document.getElementById(id).value.trim();
+  const st=document.getElementById('sendState'), th=document.querySelector('#thanks p');
+  th.textContent='Thank you. La Maison Violette will be in touch with you soon.'; st.textContent='your letter is on its way';
+  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+    body:JSON.stringify({access_key:'80b6c4bd-9a8c-4113-9f18-cf5e2f578e62',subject:'A sealed letter for La Maison Violette from '+(v('f-name')||'a guest'),
+      from_name:'La Maison Violette website',name:v('f-name'),email:v('f-mail'),'maison or project':v('f-house'),vision:v('f-vision'),botcheck:document.getElementById('f-bot').checked})})
+  .then(r=>r.json()).then(d=>{ st.textContent=d.success?'delivered to la maison':'not delivered'; if(!d.success) th.textContent='Your letter could not be delivered just now. Please write to vtavadova@gmail.com.'; })
+  .catch(()=>{ st.textContent='not delivered'; th.textContent='Your letter could not be delivered just now. Please write to vtavadova@gmail.com.'; });
   const n=document.getElementById('f-name').value.trim(); document.getElementById('sheetFrom').textContent=n?('with warm regards, '+n):'';
   const t=reduce?[0,0,0,0,0,0]:[0,700,1950,3000,4200,5350];
   STEPS.forEach((c,i)=>setTimeout(()=>stack.classList.add(c),t[i]));
