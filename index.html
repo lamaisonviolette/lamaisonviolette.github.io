@@ -522,7 +522,10 @@ footer .caps{color:var(--mute-d)}
   .gbook,.gbook.open{grid-template-columns:1fr;transform:none}
   .gright{grid-column:1;padding:36px 18px 40px;background:#f7f1e3;border-radius:3px;min-height:520px}
   .gcover{left:0;width:100%}
-  .gbook.open .gcover{opacity:0;pointer-events:none;transition:transform 1.4s cubic-bezier(.6,.05,.25,1),opacity .5s 1s}
+  .gcover .back{display:none}
+  .gcover{transition:transform .9s cubic-bezier(.5,0,.2,1),opacity .7s ease}
+  .gbook:not(.open) .gcover:hover{transform:none}
+  .gbook.open .gcover{transform:translateY(-18px) scale(.97)!important;opacity:0;pointer-events:none}
   .front{inset:-8px}
   .gleft-m{display:block;margin-bottom:26px}.gleft-m .gq{margin-top:18px}
   .bf:nth-of-type(n+4),.gs:nth-of-type(n+3){display:none}
