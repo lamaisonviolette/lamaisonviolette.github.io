@@ -1,2 +1,3 @@
-# lamaison-violette
-La Maison Violette, luxury marketing &amp; brand consultancy
+# La Maison Violette
+
+Luxury marketing & brand consultancy by Violetta Tavadova, GCC & Europe.
