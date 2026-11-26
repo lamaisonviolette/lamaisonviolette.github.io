@@ -1045,8 +1045,8 @@ letter.addEventListener('submit',e=>{ e.preventDefault(); if(stack.classList.con
   th.textContent='Thank you. La Maison Violette will be in touch with you soon.'; st.textContent='your letter is on its way';
   fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
     body:JSON.stringify({access_key:'80b6c4bd-9a8c-4113-9f18-cf5e2f578e62',subject:'A sealed letter for La Maison Violette from '+(v('f-name')||'a guest'),
-      from_name:'La Maison Violette website',name:v('f-name'),email:v('f-mail'),'maison or project':v('f-house'),vision:v('f-vision'),botcheck:document.getElementById('f-bot').checked})})
-  .then(r=>r.json()).then(d=>{ st.textContent=d.success?'delivered to la maison':'not delivered'; if(!d.success) th.textContent='Your letter could not be delivered just now. Please write to vtavadova@gmail.com.'; })
+      from_name:'La Maison Violette website',name:v('f-name'),email:v('f-mail'),'maison or project':v('f-house'),vision:v('f-vision'),...(document.getElementById('f-bot').checked?{botcheck:true}:{})})})
+  .then(r=>r.json()).then(d=>{ console.log('[maison] letter',d); st.textContent=d.success?'delivered to la maison':'not delivered'; if(!d.success) th.textContent='Your letter could not be delivered just now. Please write to vtavadova@gmail.com.'; })
   .catch(()=>{ st.textContent='not delivered'; th.textContent='Your letter could not be delivered just now. Please write to vtavadova@gmail.com.'; });
   const n=document.getElementById('f-name').value.trim(); document.getElementById('sheetFrom').textContent=n?('with warm regards, '+n):'';
   const t=reduce?[0,0,0,0,0,0]:[0,700,1950,3000,4200,5350];
